@@ -29,22 +29,24 @@
 </template>
 
 <script>
-import { getArticle } from '@/api/article';
-import MarkdownIt from 'markdown-it';
-import ArticleMeta from './components/article-meta';
-import ArticleComments from './components/article-comments';
-
+import { getArticle } from "@/api/article";
+import MarldownIt from "markdown-it";
+import ArticleMeta from "./components/article-meta";
+import ArticleComments from "./components/article-comments";
 export default {
-    name: 'ArticleIndex',
+    name: "ArticleIndex",
     async asyncData({ params }) {
         const { data } = await getArticle(params.slug);
         const { article } = data;
-        const md = new MarkdownIt();
+        const md = new MarldownIt();
         article.body = md.render(article.body);
+        article.followDisabled = false;
+        article.favoritedDisabled = false;
         return {
-            article,
+            article: article,
         };
     },
+
     components: {
         ArticleMeta,
         ArticleComments,
@@ -54,8 +56,8 @@ export default {
             title: `${this.article.title} - RealWorld`,
             meta: [
                 {
-                    hid: 'description',
-                    name: 'description',
+                    hid: "discroption",
+                    name: "description",
                     content: this.article.description,
                 },
             ],
